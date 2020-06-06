@@ -12,8 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,33 +34,37 @@ import com.karumi.dexter.listener.single.PermissionListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StaffOrderFragment extends Fragment implements ZXingScannerView.ResultHandler{
+public class StaffOrderFragment extends Fragment implements ZXingScannerView.ResultHandler {
     private ZXingScannerView scannerView;
     private FragmentStaffOrderBinding binding;
-//    private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_CAMERA = 1;
 
     public StaffOrderFragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
- //       scannerView = new ZXingScannerView(getContext());
-  //      binding.linearScan.addView(scannerView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //       scannerView = new ZXingScannerView(getContext());
+        //      binding.linearScan.addView(scannerView);
         binding = FragmentStaffOrderBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        int apiVersion = android.os.Build.VERSION.SDK_INT;
-//        if (apiVersion >= android.os.Build.VERSION_CODES.M) {
-//            if (!checkPermission()) {
-//                requestPermission();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        //check version >= Android 6
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            //check if camera permission is granted
+//            if (view.getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+//                return;
 //            }
 //        }
+//        startCamera();
+
+
         Dexter.withContext(getContext())
                 .withPermission(Manifest.permission.CAMERA)
                 .withListener(new PermissionListener() {
@@ -67,7 +73,14 @@ public class StaffOrderFragment extends Fragment implements ZXingScannerView.Res
                         binding.scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
                             @Override
                             public void handleResult(Result result) {
-
+                                Toast.makeText(getContext(), "" + result.getText(), Toast.LENGTH_SHORT).show();
+                                final ZXingScannerView.ResultHandler handler = this;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        binding.scannerView.resumeCameraPreview(handler);
+                                    }
+                                }, 1000);
                             }
                         });
                         binding.scannerView.startCamera();
@@ -94,11 +107,11 @@ public class StaffOrderFragment extends Fragment implements ZXingScannerView.Res
 
     @Override
     public void handleResult(Result result) {
-       binding.tvContent.setText(result.getText());
+        binding.tvContent.setText(result.getText());
     }
 
 //    @Override
- //   public void handleResult(Result result) {
+    //   public void handleResult(Result result) {
 //        final String strResult = result.getText();
 //        new AlertDialog.Builder(getContext())
 //                .setMessage(strResult)
@@ -116,7 +129,7 @@ public class StaffOrderFragment extends Fragment implements ZXingScannerView.Res
 //                })
 //                .create()
 //                .show();
- //   }
+    //   }
 
 //    private boolean checkPermission(){
 //        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED;
@@ -164,4 +177,36 @@ public class StaffOrderFragment extends Fragment implements ZXingScannerView.Res
 //                .show();
 //    }
 
+//    private void startCamera() {
+//        binding.scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
+//            @Override
+//            public void handleResult(Result result) {
+//                Toast.makeText(getContext(), "" + result.getText(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        binding.scannerView.startCamera();
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == REQUEST_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            startCamera();
+//        } else {
+//            new AlertDialog.Builder(getContext())
+//                    .setMessage(getString(R.string.app_name) + " needs camera permission to scan barcode")
+//                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+//                        }
+//                    })
+//                    .setNegativeButton("Don't allow", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            System.exit(0);
+//                        }
+//                    }).show();
+//        }
+//    }
 }
