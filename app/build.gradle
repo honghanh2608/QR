@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.qrapp"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -43,4 +43,7 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9'
     //dexter
     implementation 'com.karumi:dexter:6.1.2'
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }

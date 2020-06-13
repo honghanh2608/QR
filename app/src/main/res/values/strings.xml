@@ -7,4 +7,5 @@
         <item>Day</item>
         <item>Month</item>
     </string-array>
+    <string name="OK">Hoàn thành</string>
 </resources>
