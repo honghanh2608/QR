@@ -15,16 +15,16 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.qrapp.R;
-import com.example.qrapp.databinding.FragmentOrderBinding;
+import com.example.qrapp.databinding.FragmentAdminOrderBinding;
 
 import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment {
+public class AdminOrderFragment extends Fragment {
 
-    public OrderFragment() {
+    public AdminOrderFragment() {
         // Required empty public constructor
     }
 
@@ -32,7 +32,7 @@ public class OrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentOrderBinding binding =FragmentOrderBinding.inflate(inflater, container, false);
+        FragmentAdminOrderBinding binding =FragmentAdminOrderBinding.inflate(inflater, container, false);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.order_filter_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -60,7 +60,7 @@ public class OrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    void showDatePickerDialog(){
+    private void showDatePickerDialog(){
         Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);

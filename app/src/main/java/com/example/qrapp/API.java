@@ -1,6 +1,4 @@
-package com.example.qrapp.ui;
-
-import com.google.gson.Gson;
+package com.example.qrapp;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -13,9 +13,9 @@ import com.example.qrapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StaffFragment extends Fragment {
+public class AdminStaffFragment extends Fragment {
 
-    public StaffFragment() {
+    public AdminStaffFragment() {
         // Required empty public constructor
     }
 
@@ -24,6 +24,6 @@ public class StaffFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_staff, container, false);
+        return inflater.inflate(R.layout.fragment_admin_staff, container, false);
     }
 }

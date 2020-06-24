@@ -3,15 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.staff.order.StaffOrderFragment"
+    tools:context=".ui.staff.order.ScannerFragment"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearScan"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical"/>-->
     <me.dm7.barcodescanner.zxing.ZXingScannerView
         android:id="@+id/scannerView"
         android:layout_width="match_parent"
@@ -19,14 +14,15 @@
         android:layout_weight="1"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal">
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Sản phẩm"
-            android:textSize="16sp"
+            android:text="@string/product"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="#000"
             android:gravity="center_vertical"
@@ -36,8 +32,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Số lượng"
-            android:textSize="16sp"
+            android:text="@string/quantity"
+            android:textSize="15sp"
             android:textColor="#000"
             android:textStyle="bold"
             android:gravity="center_vertical|end"
@@ -51,26 +47,27 @@
         android:layout_weight="1"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal">
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Tổng"
-            android:textSize="16sp"
+            android:text="@string/total"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="#000"
             android:gravity="center_vertical"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"/>
         <TextView
-            android:id="@+id/tvTotal"
+            android:id="@+id/tvPrice"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="00000"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textColor="#000"
             android:textStyle="bold"
             android:gravity="center_vertical|end"
@@ -81,5 +78,11 @@
         android:id="@+id/btnOK"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="@string/OK"/>
+        android:text="@string/OK"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/colorOrange"
+        android:textColor="#fff"/>
 </LinearLayout>

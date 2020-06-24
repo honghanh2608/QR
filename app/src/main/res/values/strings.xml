@@ -7,5 +7,15 @@
         <item>Day</item>
         <item>Month</item>
     </string-array>
-    <string name="OK">Hoàn thành</string>
+    <string name="OK">Hoàn tất</string>
+    <string name="confirm_ok">Hoàn tất mua hàng</string>
+    <string name="scan">Quét</string>
+    <string name="add_product">Nhập kho</string>
+    <string name="account">Tài khoản</string>
+    <string name="product">Sản phẩm</string>
+    <string name="quantity">Số lượng</string>
+    <string name="total">Tổng</string>
+    <string name="price">%s VNĐ</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
 </resources>

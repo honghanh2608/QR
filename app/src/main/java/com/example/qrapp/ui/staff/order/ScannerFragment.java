@@ -1,29 +1,29 @@
 package com.example.qrapp.ui.staff.order;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import android.os.Handler;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.qrapp.R;
-import com.example.qrapp.data.QRCode;
-import com.example.qrapp.databinding.FragmentStaffOrderBinding;
+import com.example.qrapp.data.OrderItem;
+import com.example.qrapp.data.Product;
+import com.example.qrapp.databinding.FragmentScannerBinding;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -32,57 +32,55 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StaffOrderFragment extends Fragment implements Contract.View {
+public class ScannerFragment extends Fragment implements Contract.View {
     private ZXingScannerView scannerView;
-    private FragmentStaffOrderBinding binding;
+    private FragmentScannerBinding binding;
     private static final int REQUEST_CAMERA = 1;
     private Presenter presenter = new Presenter();
-    private List<QRCode> listCodes = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
+    private OrderAdapter orderAdapter;
+    private View rootView;
+    private long total = 0;
 
-    public StaffOrderFragment() {
+    public ScannerFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentStaffOrderBinding.inflate(inflater, container, false);
+        binding = FragmentScannerBinding.inflate(inflater, container, false);
         presenter.attachView(this);
-        return binding.getRoot();
+        if (rootView == null){
+            rootView = binding.getRoot();
+        }
+        return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        //check version >= Android 6
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            //check if camera permission is granted
-//            if (view.getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-//                return;
-//            }
-//        }
-//        startCamera();
+        orderAdapter = new OrderAdapter(getContext(), orderItems);
+        binding.rvOrder.setAdapter(orderAdapter);
+        binding.rvOrder.setLayoutManager(new LinearLayoutManager(getContext()));
+        //
         checkCameraPermission();
         binding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getOrder(listCodes);
                 showOrder();
-                binding.scannerView.stopCamera();
             }
         });
-
     }
 
-    private void checkCameraPermission(){
+    private void checkCameraPermission() {
         Dexter.withContext(getContext())
                 .withPermission(Manifest.permission.CAMERA)
                 .withListener(new PermissionListener() {
@@ -92,14 +90,14 @@ public class StaffOrderFragment extends Fragment implements Contract.View {
                             @Override
                             public void handleResult(Result result) {
                                 Toast.makeText(getContext(), "" + result.getText(), Toast.LENGTH_SHORT).show();
-                                addQuantity(result.getText());
+                                checkBarcode(result.getText());
                                 final ZXingScannerView.ResultHandler handler = this;
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         binding.scannerView.resumeCameraPreview(handler);
                                     }
-                                }, 1000);
+                                }, 2000);
                             }
                         });
                         binding.scannerView.startCamera();
@@ -118,58 +116,67 @@ public class StaffOrderFragment extends Fragment implements Contract.View {
                 .check();
     }
 
-    private void addQuantity(String newCode){
-        for (QRCode code : listCodes){
-            if (newCode.equals(code.getCode())){
-                code.setQuantity(code.getQuantity() + 1);
+    private void checkBarcode(String barcode) {
+        for (int i = 0; i < orderItems.size(); i++) {
+            if (barcode.equals(orderItems.get(i).getBarcode())) {//sp da quet
+                int quantity = orderItems.get(i).getQuantity() + 1;
+                orderItems.get(i).setQuantity(quantity);
+                orderAdapter.notifyItemChanged(i);
+                total = total + orderItems.get(i).getPrice();
+                setPrice(total);
                 return;
             }
         }
-        listCodes.add(new QRCode(newCode, 1));
+        presenter.getProduct(barcode);
     }
 
     @Override
     public void showOrder() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        ConfirmOrderFragment confirmOrderFragment = new ConfirmOrderFragment();
+        confirmOrderFragment.setOrderItems(orderItems);
+        confirmOrderFragment.setPrice(total);
+        fragmentTransaction.replace(R.id.container, confirmOrderFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void showErr(String mess) {
+        Toast.makeText(getContext(), mess, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showNewOrderItem(Product product) {
+        orderItems.add(new OrderItem(product.getBarcode(), 1, product.getName(), product.getPrice()));
+        orderAdapter.notifyDataSetChanged();
+        total = total + product.getPrice();
+        setPrice(total);
+    }
+
+    private void setPrice(long price){
+        DecimalFormat df = new DecimalFormat("#,###,###");
+        String p = df.format(price);
+        binding.tvPrice.setText(getString(R.string.price, p));
     }
 
     @Override
     public void onDestroy() {
-        binding.scannerView.stopCamera();
         presenter.detachView();
         super.onDestroy();
     }
 
-//    private void startCamera() {
-//        binding.scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
-//            @Override
-//            public void handleResult(Result result) {
-//                Toast.makeText(getContext(), "" + result.getText(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        binding.scannerView.startCamera();
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == REQUEST_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            startCamera();
-//        } else {
-//            new AlertDialog.Builder(getContext())
-//                    .setMessage(getString(R.string.app_name) + " needs camera permission to scan barcode")
-//                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-//                        }
-//                    })
-//                    .setNegativeButton("Don't allow", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            System.exit(0);
-//                        }
-//                    }).show();
-//        }
-//    }
+    public void resetFragment(){
+        orderItems.clear();
+        orderAdapter.notifyDataSetChanged();
+        binding.scannerView.startCamera();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding.scannerView.stopCamera();
+    }
 }

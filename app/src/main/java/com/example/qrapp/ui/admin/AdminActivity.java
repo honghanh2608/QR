@@ -8,18 +8,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
-import com.example.qrapp.R;
 import com.example.qrapp.databinding.ActivityAdminBinding;
-import com.example.qrapp.ui.admin.order.OrderFragment;
-import com.example.qrapp.ui.admin.staff.StaffFragment;
+import com.example.qrapp.ui.admin.order.AdminOrderFragment;
+import com.example.qrapp.ui.admin.staff.AdminStaffFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
     private ActivityAdminBinding binding;
-    private StaffFragment staffFragment;
-    private OrderFragment orderFragment;
+    private AdminStaffFragment adminStaffFragment;
+    private AdminOrderFragment adminOrderFragment;
     private List<Fragment> fragments = new ArrayList<>();
 
 
