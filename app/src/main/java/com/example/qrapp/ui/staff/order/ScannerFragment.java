@@ -15,6 +15,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ScannerFragment extends Fragment implements Contract.View {
+public class ScannerFragment extends Fragment implements Contract.View, ZXingScannerView.ResultHandler {
     private ZXingScannerView scannerView;
     private FragmentScannerBinding binding;
     private static final int REQUEST_CAMERA = 1;
@@ -49,6 +50,8 @@ public class ScannerFragment extends Fragment implements Contract.View {
     private OrderAdapter orderAdapter;
     private View rootView;
     private long total = 0;
+
+    private boolean isCreated = false;
 
     public ScannerFragment() {
 
@@ -67,6 +70,10 @@ public class ScannerFragment extends Fragment implements Contract.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (isCreated) {
+            return;
+        }
+        isCreated = true;
         orderAdapter = new OrderAdapter(getContext(), orderItems);
         binding.rvOrder.setAdapter(orderAdapter);
         binding.rvOrder.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -86,21 +93,8 @@ public class ScannerFragment extends Fragment implements Contract.View {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        binding.scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
-                            @Override
-                            public void handleResult(Result result) {
-                                Toast.makeText(getContext(), "" + result.getText(), Toast.LENGTH_SHORT).show();
-                                checkBarcode(result.getText());
-                                final ZXingScannerView.ResultHandler handler = this;
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        binding.scannerView.resumeCameraPreview(handler);
-                                    }
-                                }, 2000);
-                            }
-                        });
-                        binding.scannerView.startCamera();
+                        binding.scannerView.startCamera(ScannerFragment.this);
+                        binding.scannerView.setCallback(2000, result -> handleResult(result));
                     }
 
                     @Override
@@ -171,12 +165,28 @@ public class ScannerFragment extends Fragment implements Contract.View {
     public void resetFragment(){
         orderItems.clear();
         orderAdapter.notifyDataSetChanged();
-        binding.scannerView.startCamera();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         binding.scannerView.stopCamera();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void handleResult(Result result) {
+        Toast.makeText(getContext(), "" + result.getText(), Toast.LENGTH_SHORT).show();
+        Log.d("QRCodeAnalyzer", "handleResult: " + result.getText());
+        checkBarcode(result.getText());
     }
 }
