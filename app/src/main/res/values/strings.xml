@@ -18,4 +18,8 @@
     <string name="price">%s VNĐ</string>
     <string name="login">Login</string>
     <string name="signup">Sign up</string>
+    <string name="save">Lưu</string>
+    <string name="property">Thuộc tính</string>
+    <string name="add_property">Thêm thuộc tính</string>
+    <string name="property_value">Giá trị</string>
 </resources>

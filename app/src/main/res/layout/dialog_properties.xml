@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:contentDescription="@string/app_name" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProperties"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            android:id="@+id/edtName"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:maxLines="1"
+            android:autofillHints=""
+            android:textSize="14sp"
+            android:imeOptions="actionNext"
+            android:paddingHorizontal="5dp"
+            android:background="@drawable/bg_round_stroke"
+            android:layout_marginEnd="5dp"
+            android:hint="@string/property"
+            tools:ignore="LabelFor" />
+
+        <EditText
+            android:id="@+id/edtValue"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:maxLines="1"
+            android:autofillHints=""
+            android:textSize="14sp"
+            android:imeOptions="actionDone"
+            android:paddingHorizontal="5dp"
+            android:background="@drawable/bg_round_stroke"
+            android:layout_marginStart="5dp"
+            android:hint="@string/property_value"
+            tools:ignore="LabelFor" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="@string/add_property"
+        android:background="@color/colorOrange"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="15dp"/>
+
+    <TextView
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorOrange"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="@string/save"/>
+
+</LinearLayout>
