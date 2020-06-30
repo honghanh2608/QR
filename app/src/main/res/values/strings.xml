@@ -22,4 +22,9 @@
     <string name="property">Thuộc tính</string>
     <string name="add_property">Thêm thuộc tính</string>
     <string name="property_value">Giá trị</string>
+    <string name="dd_mm_yyyy">%s</string>
+    <string name="to">đến</string>
+    <string name="history">Lịch sử</string>
+    <string name="date_time">Thời gian</string>
+    <string name="value">Giá trị</string>
 </resources>

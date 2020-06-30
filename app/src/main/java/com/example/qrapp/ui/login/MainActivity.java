@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.qrapp.R;
 import com.example.qrapp.data.User;
 import com.example.qrapp.databinding.ActivityMainBinding;
+import com.example.qrapp.ui.admin.AdminActivity;
 import com.example.qrapp.ui.staff.StaffActivity;
 import com.example.qrapp.ui.staff.order.ConfirmOrderFragment;
 
@@ -30,8 +31,9 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         sharedPreferences = getApplicationContext().getSharedPreferences("QRApp", Context.MODE_PRIVATE);
+        String permission = sharedPreferences.getString("permission", null);
         if (Calendar.getInstance().getTimeInMillis() <= sharedPreferences.getLong("timeDuration", 0)) {//ktra access token còn han k
-            startActivity();
+            startActivity(permission);
         }
         presenter.attachView(this);
 
@@ -88,18 +90,20 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     }
 
     @Override
-    public void createUserSession(String access_token) {
+    public void createUserSession(String access_token, String permission) {
         sharedPreferences.edit().putString("access_token", access_token).apply();//luu access token
         long timeDuration = Calendar.getInstance().getTimeInMillis() + 30 * 24 * 60 * 60 * 1000L;
         sharedPreferences.edit().putLong("timeDuration", timeDuration).apply();//luu tg cua session la 1 thang
+        sharedPreferences.edit().putString("permission", permission).apply();
     }
 
     @Override
-    public void startActivity() {
-        binding.llProgressBar.setVisibility(View.GONE);
-        Intent intent = new Intent(this, StaffActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+    public void startActivity(String permission) {
+        if ("1".equals(permission)) {
+            startAsAdmin();
+        } else if ("2".equals(permission)){
+            startAsStaff();
+        }
     }
 
     @Override
@@ -107,6 +111,20 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         binding.llProgressBar.setVisibility(View.GONE);
         binding.tvErr.setText(mess);
         binding.tvErr.setVisibility(View.VISIBLE);
+    }
+
+    private void startAsStaff() {
+        binding.llProgressBar.setVisibility(View.GONE);
+        Intent intent = new Intent(this, StaffActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void startAsAdmin() {
+        binding.llProgressBar.setVisibility(View.GONE);
+        Intent intent = new Intent(this, AdminActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }
