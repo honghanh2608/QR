@@ -1,5 +1,7 @@
 package com.example.qrapp;
 
+import com.example.qrapp.data.OrderHistory;
+import com.example.qrapp.data.OrderHistoryProduct;
 import com.example.qrapp.data.OrderItem;
 import com.example.qrapp.data.OrderRequest;
 import com.example.qrapp.data.Product;
@@ -26,6 +28,9 @@ public interface APIService {
     Call<HashMap<String,Long>> createOrder(@Header("access_token") String access_token,
                            @Header("Content-Type") String content_type, @Body OrderRequest orderRequest);
 
-    @POST("/v1/auth/staff")
+    @POST("/v1/auth")
     Call<HashMap<String,String>> authenticateAccount(@Body User user);
+
+    @GET("/v1/order")
+    Call<List<OrderHistory>> getAllOrder(@Header("access_token") String token);
 }

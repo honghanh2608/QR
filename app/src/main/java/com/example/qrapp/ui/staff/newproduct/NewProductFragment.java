@@ -1,12 +1,8 @@
 package com.example.qrapp.ui.staff.newproduct;
 
+import android.content.Context;
 import android.graphics.Outline;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +11,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.qrapp.Callback;
 import com.example.qrapp.R;
+import com.example.qrapp.data.Property;
 import com.example.qrapp.databinding.FragmentNewProductBinding;
+import com.example.qrapp.dialog.PropertiesDialog;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +32,7 @@ public class NewProductFragment extends Fragment implements Contract.View {
     private FragmentNewProductBinding binding;
     private Presenter presenter = new Presenter();
     private View rootView;
+    private List<Property> properties = new ArrayList<>();
 
     public NewProductFragment() {
         // Required empty public constructor
@@ -66,6 +74,8 @@ public class NewProductFragment extends Fragment implements Contract.View {
 
             }
         });
+
+        binding.edtProperty.setOnClickListener(v -> addProperties());
     }
 
     public void createNewProduct(){
@@ -90,5 +100,18 @@ public class NewProductFragment extends Fragment implements Contract.View {
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
+    }
+
+    private void addProperties() {
+        Context context = getContext();
+        if (context == null) return;
+        PropertiesDialog dialog = new PropertiesDialog(context, properties);
+        dialog.setCallback(data -> {
+            if (data == null) return;
+            properties.clear();
+            properties.addAll(data);
+            binding.edtProperty.setText(new Gson().toJson(properties));
+        });
+        dialog.show();
     }
 }
