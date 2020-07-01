@@ -2,6 +2,7 @@ package com.example.qrapp.ui.staff.order;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Outline;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.Toast;
 
 import com.example.qrapp.ObservableManager;
@@ -52,6 +54,12 @@ public class ConfirmOrderFragment extends Fragment implements Contract.OrderView
                              Bundle savedInstanceState) {
         binding = FragmentConfirmOrderBinding.inflate(inflater, container, false);
         presenter.attachOrderView(this);
+        binding.llActionBar.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRect(-100, -15, view.getWidth()+100, view.getHeight());
+            }
+        });
         return binding.getRoot();
     }
 

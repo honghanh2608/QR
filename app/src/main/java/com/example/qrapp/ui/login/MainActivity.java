@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     private ActivityMainBinding binding;
     private Presenter presenter = new Presenter();
     private SharedPreferences sharedPreferences;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +65,16 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         String email = binding.edtEmail.getText().toString();
         String password = binding.edtPassword.getText().toString();
         if (email.equals("") || password.equals("")){
-            binding.tvErr.setText("* Enter your email and password");
+            binding.tvErr.setText("Enter your email and password");
             binding.tvErr.setVisibility(View.VISIBLE);
         }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            binding.tvErr.setText("* Invalid email address");
+            binding.tvErr.setText("Invalid email address");
             binding.tvErr.setVisibility(View.VISIBLE);
         }else if (password.length() < 6){
-            binding.tvErr.setText("* Password length must be greater than 6");
+            binding.tvErr.setText("Password length must be greater than 6");
             binding.tvErr.setVisibility(View.VISIBLE);
         }else {
-            user = new User(email, password);
+            User user = new User(email, password);
             binding.llProgressBar.setVisibility(View.VISIBLE);
             presenter.login(user);
         }
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     @Override
     public void createUserSession(String access_token) {
         sharedPreferences.edit().putString("access_token", access_token).apply();//luu access token
-        long timeDuration = Calendar.getInstance().getTimeInMillis() + 30*24*60*60*1000;
+        long timeDuration = Calendar.getInstance().getTimeInMillis() + (long) 30*24*60*60*1000;
         sharedPreferences.edit().putLong("timeDuration", timeDuration).apply();//luu tg cua session la 1 thang
     }
 

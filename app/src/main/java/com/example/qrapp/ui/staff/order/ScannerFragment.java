@@ -171,6 +171,7 @@ public class ScannerFragment extends Fragment implements Contract.View {
     public void resetFragment(){
         orderItems.clear();
         orderAdapter.notifyDataSetChanged();
+        total = 0;
         binding.scannerView.startCamera();
     }
 

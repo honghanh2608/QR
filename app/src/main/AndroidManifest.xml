@@ -17,14 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SignUpActivity"></activity>
-        <activity android:name=".ui.staff.StaffActivity"></activity>
-        <activity android:name=".ui.admin.AdminActivity"></activity>
-        <activity android:name=".ui.login.MainActivity">
+        <activity android:name=".ui.staff.StaffActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.admin.AdminActivity"></activity>
+        <activity android:name=".ui.login.MainActivity">
+
         </activity>
     </application>
 
