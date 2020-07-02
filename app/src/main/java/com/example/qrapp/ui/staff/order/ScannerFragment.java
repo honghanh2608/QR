@@ -165,6 +165,8 @@ public class ScannerFragment extends Fragment implements Contract.View, ZXingSca
     public void resetFragment(){
         orderItems.clear();
         orderAdapter.notifyDataSetChanged();
+        total = 0;
+        setPrice(0);
     }
 
     @Override

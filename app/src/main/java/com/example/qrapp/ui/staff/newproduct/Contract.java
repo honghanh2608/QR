@@ -6,7 +6,7 @@ import com.example.qrapp.data.Product;
 public class Contract {
     interface View{
         void showErr(String mess);
-        void showDialogSucess();
+        void showDialogSuccess();
     }
     interface Presenter{
         void attachView(View view);

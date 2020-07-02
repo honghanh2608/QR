@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Thực phẩm khô"
+  },
+  {
+    "id": 2,
+    "name": "Gia vị"
+  },
+  {
+    "id": 3,
+    "name": "Đồ uống"
+  },
+  {
+    "id": 4,
+    "name": "Sữa"
+  },
+  {
+    "id": 5,
+    "name": "Hoá phẩm"
+  },
+  {
+    "id": 6,
+    "name": "Đồ gia dụng"
+  }
+]
