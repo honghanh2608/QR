@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -44,7 +45,7 @@ public class StaffActivity extends AppCompatActivity {
         binding.lnStaffFunction.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-                outline.setRect(-100, -15, view.getWidth()+100, view.getHeight());
+                outline.setRect(-100, -15, view.getWidth() + 100, view.getHeight());
             }
         });
         addFragment();
@@ -52,14 +53,15 @@ public class StaffActivity extends AppCompatActivity {
         disposable = ObservableManager.subject.doOnNext(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Throwable {//ham khi nhan dc event
-                getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                replaceFragment(0);
-                ((ScannerFragment) fragments.get(0)).resetFragment();
+                clearBackStack();
+                addScannerFragment();
             }
+        }).doOnError(throwable -> {
+            Log.d("TAG", "onCreate: " + throwable.getMessage());
         }).subscribe();
     }
 
-    public void addFragment(){
+    public void addFragment() {
         ScannerFragment scannerFragment = new ScannerFragment();
         NewProductFragment newProductFragment = new NewProductFragment();
         StaffAccountFragment staffAccountFragment = new StaffAccountFragment();
@@ -74,9 +76,9 @@ public class StaffActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void onClick(){
+    public void onClick() {
         binding.lnScanner.setOnClickListener(v -> {
-            if (!isScannerFragment){
+            if (!isScannerFragment) {
                 replaceFragment(0);
                 isScannerFragment = true;
                 isStaffAccountFragment = isNewProductFragment = false;
@@ -84,7 +86,7 @@ public class StaffActivity extends AppCompatActivity {
             }
         });
         binding.lnNewProduct.setOnClickListener(v -> {
-            if (!isNewProductFragment){
+            if (!isNewProductFragment) {
                 replaceFragment(1);
                 isNewProductFragment = true;
                 isScannerFragment = isStaffAccountFragment = false;
@@ -92,7 +94,7 @@ public class StaffActivity extends AppCompatActivity {
             }
         });
         binding.lnAccount.setOnClickListener(v -> {
-            if (!isStaffAccountFragment){
+            if (!isStaffAccountFragment) {
                 replaceFragment(2);
                 isStaffAccountFragment = true;
                 isScannerFragment = isNewProductFragment = false;
@@ -101,7 +103,7 @@ public class StaffActivity extends AppCompatActivity {
         });
     }
 
-    public void replaceFragment(int index){
+    public void replaceFragment(int index) {
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragments.get(index));
@@ -112,7 +114,7 @@ public class StaffActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void setColor(ImageView img1, TextView tv1, ImageView img2, TextView tv2, ImageView img3, TextView tv3){
+    public void setColor(ImageView img1, TextView tv1, ImageView img2, TextView tv2, ImageView img3, TextView tv3) {
         img1.setColorFilter(getColor(R.color.colorRed));
         tv1.setTextColor(getColor(R.color.colorRed));
         img2.setColorFilter(getColor(R.color.colorBlack));
@@ -125,5 +127,20 @@ public class StaffActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         disposable.dispose();
+    }
+
+    private void clearBackStack() {
+        FragmentManager fm = getSupportFragmentManager();
+        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+            fm.popBackStack();
+        }
+    }
+
+    private void addScannerFragment() {
+        ScannerFragment fragment = new ScannerFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.container, fragment);
+        ft.commit();
     }
 }
