@@ -163,23 +163,29 @@ public class NewProductFragment extends Fragment implements Contract.View {
             return;
         }
 
-        String name = binding.edtName.getText().toString();
-        String manufacturer = binding.edtManufacturer.getText().toString();
-        String mfg = binding.edtMFG.getText().toString();
-        String exp = binding.edtEXP.getText().toString();
-        int count = Integer.parseInt(binding.edtCount.getText().toString().trim());
-        long price = Long.parseLong(binding.edtPrice.getText().toString().trim());
         Product product = new Product();
-        product.setName(name);
-        product.setProperties(new Gson().toJson(properties));
-        product.setManufacturer(manufacturer);
-        product.setMfg(mfg);
-        product.setExp(exp);
-        product.setCount(count);
-        product.setPrice(price);
-        product.setBarcode(barcode);
-        product.setCategoryId(selectedCategoryId);
-        presenter.createProduct(product);
+
+        try {
+            product.setBarcode(barcode);
+            String name = binding.edtName.getText().toString();
+            String manufacturer = binding.edtManufacturer.getText().toString();
+            String mfg = binding.edtMFG.getText().toString();
+            String exp = binding.edtEXP.getText().toString();
+            product.setManufacturer(manufacturer);
+            product.setMfg(mfg);
+            product.setExp(exp);
+            product.setName(name);
+            product.setProperties(new Gson().toJson(properties));
+            product.setCategoryId(selectedCategoryId);
+            int count = Integer.parseInt(binding.edtCount.getText().toString().trim());
+            long price = Long.parseLong(binding.edtPrice.getText().toString().trim());
+            product.setCount(count);
+            product.setPrice(price);
+            presenter.createProduct(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ và đúng thông tin", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -201,9 +207,15 @@ public class NewProductFragment extends Fragment implements Contract.View {
                     dialog.cancel();
                     barcode = null;
                     selectedCategoryId = 0;
+                    properties.clear();
                     binding.tvBarcode.setText("");
                     binding.edtName.setText("");
-                    //todo 
+                    binding.edtPrice.setText("");
+                    binding.edtManufacturer.setText("");
+                    binding.tvProperty.setText("");
+                    binding.edtMFG.setText("");
+                    binding.edtEXP.setText("");
+                    binding.edtCount.setText("");
                 }).show();
     }
 

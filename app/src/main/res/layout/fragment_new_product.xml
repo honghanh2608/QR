@@ -285,7 +285,7 @@
                 android:maxLines="1"
                 android:textColor="#000"
                 android:textSize="14sp"
-                android:inputType="number"/>
+                android:inputType="text"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
