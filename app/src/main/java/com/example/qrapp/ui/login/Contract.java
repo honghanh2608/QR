@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Contract {
     interface View{
-        void createUserSession(String access_token, String permission, String username, String id);
+        void createUserSession(String access_token, String permission, String username, String id, String email);
         void startActivity(String permission);
         void showErr(String mess);
     }

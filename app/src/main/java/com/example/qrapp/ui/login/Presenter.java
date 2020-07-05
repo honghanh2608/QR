@@ -28,7 +28,7 @@ public class Presenter implements Contract.Presenter {
                     view.showErr("Email or password is not correct");
                 }else {
                     user.setAccess_token(data.get("access_token"));
-                    view.createUserSession(data.get("access_token"), data.get("permission"), user.getEmail(), data.get("id"));
+                    view.createUserSession(data.get("access_token"), data.get("permission"), data.get("username"), data.get("id"),  user.getEmail());
                     view.startActivity(data.get("permission"));
                 }
             }

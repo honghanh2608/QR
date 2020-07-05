@@ -17,6 +17,7 @@ import com.example.qrapp.R;
 import com.example.qrapp.databinding.ActivityAdminBinding;
 import com.example.qrapp.ui.admin.order.AdminOrderFragment;
 import com.example.qrapp.ui.admin.staff.AdminStaffFragment;
+import com.example.qrapp.ui.staff.account.StaffAccountFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public class AdminActivity extends AppCompatActivity {
         fragments = Arrays.asList(
                 new AdminOrderFragment(),
                 new AdminStaffFragment(),
-                new AdminStaffFragment()
+                new StaffAccountFragment()
         );
 
         navItems = Arrays.asList(

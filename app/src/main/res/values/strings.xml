@@ -46,4 +46,6 @@
     <string name="new_password">Mật khẩu mới</string>
     <string name="logout">Đăng xuất</string>
     <string name="price_">Giá</string>
+    <string name="as_admin">Chủ shop</string>
+    <string name="as_staff">Nhân viên</string>
 </resources>

@@ -22,6 +22,7 @@ import com.example.qrapp.APIService;
 import com.example.qrapp.R;
 import com.example.qrapp.data.UpdatePasswordRequest;
 import com.example.qrapp.databinding.FragmentStaffAccountBinding;
+import com.example.qrapp.dialog.LoadingDialog;
 import com.example.qrapp.ui.login.MainActivity;
 
 import java.util.Map;
@@ -38,6 +39,7 @@ public class StaffAccountFragment extends Fragment {
 
     private FragmentStaffAccountBinding binding;
     SharedPreferences preferences;
+    private LoadingDialog loadingDialog;
 
 
     @Override
@@ -51,17 +53,20 @@ public class StaffAccountFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Context context = view.getContext();
+        loadingDialog = new LoadingDialog(context);
         preferences = context.getSharedPreferences("QRApp", Context.MODE_PRIVATE);
         String username = preferences.getString("username", "No Name");
         binding.tvName.setText(username);
         String url = "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=" + username;
         Glide.with(context).load(url).into(binding.imgAvatar);
 
+        String permission = preferences.getString("permission", "2");
         String token = preferences.getString("access_token", "");
         String id = preferences.getString("id", "");
         if (TextUtils.isEmpty(token) || TextUtils.isEmpty(id)) {
             hideForm();
         }
+        binding.tvRole.setText("1".equals(permission) ? R.string.as_admin : R.string.as_staff);
         binding.cbEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> enableForm(isChecked));
         binding.btnChangePassword.setOnClickListener(v -> onChangePassword());
         binding.tvLogout.setOnClickListener(v -> logout());
@@ -81,30 +86,35 @@ public class StaffAccountFragment extends Fragment {
         APIService service = API.getInstance().getApiService();
         String token = preferences.getString("access_token", "");
         String id = preferences.getString("id", "");
+        loadingDialog.show();
         UpdatePasswordRequest request = new UpdatePasswordRequest(id, oldPassword, newPassword);
         service.changePassword(token, request).enqueue(new Callback<Map<String, String>>() {
             @Override
             public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                loadingDialog.cancel();
                 handleResponse(response);
             }
 
             @Override
             public void onFailure(Call<Map<String, String>> call, Throwable t) {
-
+                loadingDialog.cancel();
+                handleError();
             }
         });
     }
 
     private void handleResponse(Response<Map<String, String>> response) {
         if (response.body() == null) {
-            Toast.makeText(requireContext(), "Something wen't wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!response.isSuccessful()) {
             Toast.makeText(requireContext(), response.body().get("message"), Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(requireContext(), "Password has been updated successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+        binding.edtNewPassword.setText("");
+        binding.edtOldPassword.setText("");
     }
 
     private void hideForm() {
@@ -119,5 +129,9 @@ public class StaffAccountFragment extends Fragment {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void handleError() {
+        Toast.makeText(requireContext(), "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
     }
 }
