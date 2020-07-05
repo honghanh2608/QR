@@ -53,7 +53,7 @@ public class NewProductFragment extends Fragment implements Contract.View {
     private List<Property> properties = new ArrayList<>();
     private List<Category> categories = new ArrayList<>();
     private String barcode;
-    private int selectedCategoryId;
+    private int selectedCategoryId = 0;
     private LoadingDialog loadingDialog;
 
     public NewProductFragment() {
@@ -64,9 +64,9 @@ public class NewProductFragment extends Fragment implements Contract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentNewProductBinding.inflate(inflater, container, false);
         presenter.attachView(this);
         if (rootView == null) {
+            binding = FragmentNewProductBinding.inflate(inflater, container, false);
             rootView = binding.getRoot();
         }
         //
@@ -199,6 +199,11 @@ public class NewProductFragment extends Fragment implements Contract.View {
                 .setNegativeButton("OK", (dialog, which) -> {
                     resetFragment();
                     dialog.cancel();
+                    barcode = null;
+                    selectedCategoryId = 0;
+                    binding.tvBarcode.setText("");
+                    binding.edtName.setText("");
+                    //todo 
                 }).show();
     }
 

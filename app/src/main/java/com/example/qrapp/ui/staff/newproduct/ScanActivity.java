@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.qrapp.ObservableManager;
 import com.example.qrapp.R;
 import com.example.qrapp.databinding.ActivityScanBinding;
 import com.google.zxing.Result;
@@ -40,5 +41,12 @@ public class ScanActivity extends AppCompatActivity implements Callback {
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.scannerView.stopCamera();
+        ObservableManager.fromScanner.onNext(true);
     }
 }

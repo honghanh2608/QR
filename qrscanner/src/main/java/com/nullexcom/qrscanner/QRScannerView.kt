@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.CameraX
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -98,5 +99,8 @@ class QRScannerView : FrameLayout {
     fun setCallback(delay: Long, callback: Callback?) {
         this.delay = delay
         this.callback = callback
+    }
+
+    fun shutDown() {
     }
 }
