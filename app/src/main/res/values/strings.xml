@@ -41,4 +41,9 @@
     <string name="mfg">Ngày sản xuất</string>
     <string name="manufacturer">Nhà sản xuất</string>
     <string name="name">Tên</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="old_password">Mật khẩu cũ</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="price_">Giá</string>
 </resources>

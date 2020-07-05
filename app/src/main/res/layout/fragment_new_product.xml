@@ -66,12 +66,58 @@
             <EditText
                 android:id="@+id/edtName"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/editext_shape"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:maxLines="1"
+                android:textColor="#000"
+                android:textSize="14sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/price_"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="*"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"/>
+                <TextView
+                    android:id="@+id/tvErrPrice"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Bắt buộc"
+                    android:textStyle="italic"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical|end"
+                    android:visibility="gone"/>
+            </LinearLayout>
+            <EditText
+                android:id="@+id/edtPrice"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/editext_shape"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:maxLines="1"
+                android:inputType="number"
                 android:textColor="#000"
                 android:textSize="14sp"/>
 
@@ -111,7 +157,7 @@
             <EditText
                 android:id="@+id/edtManufacturer"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/editext_shape"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="15dp"
@@ -130,30 +176,32 @@
                 android:layout_marginEnd="15dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp">
                 <TextView
                     android:id="@+id/tvProperty"
-                    android:layout_width="280dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:background="@drawable/editext_shape"
                     android:maxLines="1"
                     android:gravity="center_vertical"
                     android:textColor="#000"
                     android:textSize="14sp"/>
-                <TextView
+                <ImageView
                     android:id="@+id/tvAddProperty"
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/button_shape"
-                    android:text="..."
+                    android:src="@drawable/ic_more"
+                    android:tint="#fff"
                     android:textSize="20sp"
                     android:textColor="#fff"
                     android:gravity="center"
-                    android:layout_marginStart="30dp"/>
+                    android:layout_marginStart="20dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -192,7 +240,7 @@
             <EditText
                 android:id="@+id/edtMFG"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/editext_shape"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="15dp"
@@ -202,7 +250,7 @@
                 android:textSize="14sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
@@ -236,7 +284,7 @@
             <EditText
                 android:id="@+id/edtEXP"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/editext_shape"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="15dp"
@@ -281,12 +329,13 @@
             <EditText
                 android:id="@+id/edtCount"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/editext_shape"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:maxLines="1"
+                android:inputType="number"
                 android:textColor="#000"
                 android:textSize="14sp"/>
             <TextView
@@ -300,10 +349,11 @@
                 android:layout_marginEnd="15dp"/>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/spinner_background">
                 <Spinner
                     android:id="@+id/spnCategory"
@@ -330,7 +380,7 @@
             android:paddingStart="15dp"
             android:paddingEnd="15dp"/>
         <TextView
-            android:id="@+id/tvPrice"
+            android:id="@+id/tvBarcode"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

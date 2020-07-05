@@ -7,6 +7,8 @@ public class Contract {
     interface View{
         void showErr(String mess);
         void showDialogSuccess();
+        void showLoading();
+        void hideLoading();
     }
     interface Presenter{
         void attachView(View view);
@@ -14,6 +16,6 @@ public class Contract {
         void createProduct(Product product);
     }
     interface Interactor{
-        void createProduct(Product product, APICallback<Integer> callback);
+        void createProduct(Product product, APICallback<Boolean> callback);
     }
 }

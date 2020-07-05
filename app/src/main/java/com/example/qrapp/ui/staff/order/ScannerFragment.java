@@ -181,7 +181,7 @@ public class ScannerFragment extends Fragment implements Contract.View, ZXingSca
 
     @Override
     public void onDestroyView() {
-        binding.scannerView.stopCamera();
+//        binding.scannerView.stopCamera();
         super.onDestroyView();
     }
 

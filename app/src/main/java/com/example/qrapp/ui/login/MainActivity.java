@@ -89,11 +89,13 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     }
 
     @Override
-    public void createUserSession(String access_token, String permission) {
+    public void createUserSession(String access_token, String permission, String username, String id) {
         sharedPreferences.edit().putString("access_token", access_token).apply();//luu access token
         long timeDuration = Calendar.getInstance().getTimeInMillis() + 30 * 24 * 60 * 60 * 1000L;
         sharedPreferences.edit().putLong("timeDuration", timeDuration).apply();//luu tg cua session la 1 thang
         sharedPreferences.edit().putString("permission", permission).apply();
+        sharedPreferences.edit().putString("username", username).apply();
+        sharedPreferences.edit().putString("id", id).apply();
     }
 
     @Override
