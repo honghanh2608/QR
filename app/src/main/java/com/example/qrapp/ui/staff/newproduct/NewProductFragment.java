@@ -55,7 +55,7 @@ public class NewProductFragment extends Fragment implements Contract.View {
     private Product product = new Product();
 
     private String barcode;
-    private int selectedCategoryId;
+    private int selectedCategoryId = 0;
     private LoadingDialog loadingDialog;
 
     public NewProductFragment() {
@@ -66,9 +66,9 @@ public class NewProductFragment extends Fragment implements Contract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentNewProductBinding.inflate(inflater, container, false);
         presenter.attachView(this);
         if (rootView == null) {
+            binding = FragmentNewProductBinding.inflate(inflater, container, false);
             rootView = binding.getRoot();
         }
         //
@@ -189,6 +189,11 @@ public class NewProductFragment extends Fragment implements Contract.View {
                 .setMessage("Thêm sản phẩm thành công")
                 .setNegativeButton("OK", (dialog, which) -> {
                     dialog.cancel();
+                    barcode = null;
+                    selectedCategoryId = 0;
+                    binding.tvBarcode.setText("");
+                    binding.edtName.setText("");
+                    //todo 
                 }).show();
     }
 

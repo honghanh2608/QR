@@ -35,6 +35,8 @@ public class StaffActivity extends AppCompatActivity {
     private boolean isNewProductFragment = false;
     private boolean isStaffAccountFragment = false;
     private Disposable disposable;
+    private Disposable reloadScannerDisposable;
+    private boolean reloadScanner = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,10 @@ public class StaffActivity extends AppCompatActivity {
         }).doOnError(throwable -> {
             Log.d("TAG", "onCreate: " + throwable.getMessage());
         }).subscribe();
+
+        reloadScannerDisposable = ObservableManager.fromScanner.doOnNext(b -> {
+            reloadScanner = true;
+        }).subscribe();
     }
 
     public void addFragment() {
@@ -79,6 +85,10 @@ public class StaffActivity extends AppCompatActivity {
     public void onClick() {
         binding.lnScanner.setOnClickListener(v -> {
             if (!isScannerFragment) {
+                if (reloadScanner) {
+                    fragments.set(0, new ScannerFragment());
+                    reloadScanner = false;
+                }
                 replaceFragment(0);
                 isScannerFragment = true;
                 isStaffAccountFragment = isNewProductFragment = false;
@@ -100,6 +110,11 @@ public class StaffActivity extends AppCompatActivity {
                 isScannerFragment = isNewProductFragment = false;
                 setColor(binding.imgAccount, binding.tvAccount, binding.imgScan, binding.tvScan, binding.imgAddProduct, binding.tvAddProduct);
             }
+        });
+        binding.lnScanner.setOnLongClickListener(v -> {
+            clearBackStack();
+            addScannerFragment();
+            return true;
         });
     }
 
@@ -137,10 +152,7 @@ public class StaffActivity extends AppCompatActivity {
     }
 
     private void addScannerFragment() {
-        ScannerFragment fragment = new ScannerFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.container, fragment);
-        ft.commit();
+        fragments.set(0, new ScannerFragment());
+        replaceFragment(0);
     }
 }
