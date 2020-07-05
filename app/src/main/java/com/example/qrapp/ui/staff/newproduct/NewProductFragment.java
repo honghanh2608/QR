@@ -52,8 +52,6 @@ public class NewProductFragment extends Fragment implements Contract.View {
     private View rootView;
     private List<Property> properties = new ArrayList<>();
     private List<Category> categories = new ArrayList<>();
-    private Product product = new Product();
-
     private String barcode;
     private int selectedCategoryId;
     private LoadingDialog loadingDialog;
@@ -118,6 +116,17 @@ public class NewProductFragment extends Fragment implements Contract.View {
         binding.imgScan.setOnClickListener(v -> startScanBarcodeFragment());
 
         binding.btnSave.setOnClickListener(v -> createNewProduct());
+    }
+
+    private void resetFragment(){
+        binding.edtName.setText("");
+        binding.edtPrice.setText("");
+        binding.edtManufacturer.setText("");
+        binding.edtEXP.setText("");
+        binding.edtMFG.setText("");
+        binding.edtCount.setText("");
+        binding.tvProperty.setText("");
+        binding.tvBarcode.setText("");
     }
 
     private String getJSONFromAsset() {
@@ -188,6 +197,7 @@ public class NewProductFragment extends Fragment implements Contract.View {
         new AlertDialog.Builder(requireContext())
                 .setMessage("Thêm sản phẩm thành công")
                 .setNegativeButton("OK", (dialog, which) -> {
+                    resetFragment();
                     dialog.cancel();
                 }).show();
     }

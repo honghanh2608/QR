@@ -55,7 +55,7 @@ public class NewStaffFragment extends Fragment implements Contract.NewStaffView 
             String email = binding.edtEmail.getText().toString();
             String password = binding.edtPassword.getText().toString();
             checkInfo(name,email,password);
-            if (!name.equals("")&&!email.equals("")&&!password.equals("")&&Patterns.EMAIL_ADDRESS.matcher(email).matches()&&password.length()>6) {
+            if (!name.equals("")&&!email.equals("")&&!password.equals("")&&Patterns.EMAIL_ADDRESS.matcher(email).matches()&&password.length()>=6) {
                 User user = new User(name, email, password);
                 SharedPreferences sharedPreferences = getContext().getApplicationContext().getSharedPreferences("QRApp", Context.MODE_PRIVATE);
                 String access_token = sharedPreferences.getString("access_token", null);

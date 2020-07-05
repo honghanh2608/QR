@@ -137,10 +137,7 @@ public class StaffActivity extends AppCompatActivity {
     }
 
     private void addScannerFragment() {
-        ScannerFragment fragment = new ScannerFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.container, fragment);
-        ft.commit();
+        fragments.set(0, new ScannerFragment());
+        replaceFragment(0);
     }
 }

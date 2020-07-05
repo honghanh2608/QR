@@ -83,7 +83,7 @@
                 android:gravity="center_vertical|end"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:text="00000"
+                android:text="0 VNĐ"
                 android:textColor="#000"
                 android:textSize="15sp"
                 android:textStyle="bold" />

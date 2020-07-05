@@ -80,6 +80,7 @@ public class AdminStaffFragment extends Fragment implements Contract.View {
 
     @Override
     public void showListStaff(List<User> staffs) {
+        this.staffs.clear();
         this.staffs.addAll(staffs);
         adapter.notifyDataSetChanged();
     }
