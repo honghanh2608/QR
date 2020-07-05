@@ -20,7 +20,9 @@
         <activity android:name=".SignUpActivity"></activity>
         <activity android:name=".ui.staff.StaffActivity">
         </activity>
-        <activity android:name=".ui.admin.AdminActivity"></activity>
+        <activity android:name=".ui.admin.AdminActivity">
+
+        </activity>
         <activity android:name=".ui.login.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

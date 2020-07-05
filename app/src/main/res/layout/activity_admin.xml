@@ -16,7 +16,7 @@
     <LinearLayout
         android:id="@+id/linearlayout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="55dp"
         android:orientation="horizontal"
         android:elevation="5dp"
         android:background="#fff"
@@ -33,14 +33,15 @@
                 android:id="@+id/imgOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_order" />
+                android:src="@drawable/ic_order"
+                android:tint="@color/colorRed"/>
             <TextView
                 android:id="@+id/tvOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Order"
-                android:textColor="#000"
+                android:text="@string/order"
+                android:textColor="@color/colorRed"
                 android:textSize="9sp"/>
         </LinearLayout>
 
@@ -61,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Staff"
+                android:text="@string/staff"
                 android:textColor="#000"
                 android:textSize="9sp"/>
         </LinearLayout>
@@ -82,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Admin"
+                android:text="@string/account"
                 android:textColor="#000"
                 android:textSize="9sp"/>
         </LinearLayout>

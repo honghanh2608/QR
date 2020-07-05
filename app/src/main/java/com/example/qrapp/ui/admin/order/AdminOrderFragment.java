@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qrapp.OnItemClickListener;
 import com.example.qrapp.R;
 import com.example.qrapp.data.OrderHistory;
 import com.example.qrapp.data.OrderHistoryProduct;
@@ -53,6 +56,12 @@ public class AdminOrderFragment extends Fragment implements Contract.View {
         adapter = new OrderHistoryAdapter(view.getContext(), orders);
         binding.rvOrders.setAdapter(adapter);
         binding.rvOrders.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int i) {
+                startOrderDetailFragment(i);
+            }
+        });
         binding.tvStartDate.setOnClickListener(v -> pickStartDate());
         binding.tvEndDate.setOnClickListener(v -> pickEndDate());
         initText(binding.tvStartDate, startDate);
@@ -64,6 +73,16 @@ public class AdminOrderFragment extends Fragment implements Contract.View {
     public void onDestroyView() {
         presenter.detachView();
         super.onDestroyView();
+    }
+
+    private void startOrderDetailFragment(int i){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        OrderDetailFragment orderDetailFragment = new OrderDetailFragment();
+        orderDetailFragment.setProducts(orders.get(i).getProducts());
+        fragmentTransaction.replace(R.id.container, orderDetailFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void initText(TextView tv, Calendar calendar) {

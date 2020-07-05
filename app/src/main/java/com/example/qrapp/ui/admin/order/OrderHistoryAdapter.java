@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrapp.OnItemClickListener;
 import com.example.qrapp.R;
 import com.example.qrapp.data.OrderHistory;
 import com.example.qrapp.data.OrderHistoryProduct;
@@ -23,6 +24,11 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     private Context context;
     private List<OrderHistory> orders;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public OrderHistoryAdapter(Context context, List<OrderHistory> orders) {
         this.context = context;
@@ -39,6 +45,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         holder.bind(position);
+        holder.itemView.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(position);
+        });
     }
 
     @Override

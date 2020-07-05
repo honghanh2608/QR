@@ -64,4 +64,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+    //swipe layout
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
 }

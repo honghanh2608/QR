@@ -6,6 +6,7 @@ import com.example.qrapp.data.OrderItem;
 import com.example.qrapp.data.OrderRequest;
 import com.example.qrapp.data.Product;
 import com.example.qrapp.data.User;
+import com.google.gson.JsonElement;
 
 import org.w3c.dom.Text;
 
@@ -33,4 +34,10 @@ public interface APIService {
 
     @GET("/v1/order")
     Call<List<OrderHistory>> getAllOrder(@Header("access_token") String token);
+
+    @GET("/v1/staff")
+    Call<List<User>> getListStaff(@Header("access_token") String access_token);
+
+    @POST("/v1/staff")
+    Call<JsonElement> createStaff(@Header("access_token") String access_token,@Body User user);
 }
